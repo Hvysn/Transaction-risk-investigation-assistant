@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------------- */
+/* Theme CSS Variables                                                          */
+/* -------------------------------------------------------------------------- */
+:root {
+  --bg-base:        #080C14;
+  --bg-nav:         rgba(12, 17, 29, 0.92);
+  --bg-card:        rgba(17, 24, 39, 0.75);
+  --bg-card-solid:  #111827;
+  --bg-input:       #0d1421;
+  --bg-table-head:  rgba(17, 24, 39, 0.8);
+  --bg-badge:       #1f2937;
+  --border-color:   rgba(255, 255, 255, 0.07);
+  --border-std:     #1f2937;
+  --text-primary:   #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted:     #6b7280;
+  --scrollbar-track:#0d131f;
+  --scrollbar-thumb:#1f2937;
+  --scrollbar-hover:#374151;
+}
+
+.light-mode {
+  --bg-base:        #f0f4f8;
+  --bg-nav:         rgba(255, 255, 255, 0.95);
+  --bg-card:        rgba(255, 255, 255, 0.85);
+  --bg-card-solid:  #ffffff;
+  --bg-input:       #f8fafc;
+  --bg-table-head:  rgba(241, 245, 249, 0.95);
+  --bg-badge:       #e2e8f0;
+  --border-color:   rgba(0, 0, 0, 0.08);
+  --border-std:     #e2e8f0;
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --scrollbar-track:#e2e8f0;
+  --scrollbar-thumb:#cbd5e1;
+  --scrollbar-hover:#94a3b8;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base Body                                                                   */
+/* -------------------------------------------------------------------------- */
+@layer base {
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Smooth transitions on mode switch                                            */
+/* -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+/* Exclude transform and opacity from global transition */
+.no-transition {
+  transition: none !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Scrollbar                                                                    */
+/* -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Theme-aware glass panel                                                      */
+/* -------------------------------------------------------------------------- */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}
+
+.light-mode .glass-panel {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Theme toggle button animation                                                */
+/* -------------------------------------------------------------------------- */
+.theme-toggle-btn {
+  position: relative;
+  overflow: hidden;
+}
+.theme-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.theme-toggle-btn:hover::after {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Light mode overrides for coloured elements */
+/* -------------------------------------------------------------------------- */
+.light-mode .text-slate-100 { color: #0f172a !important; }
+.light-mode .text-slate-200 { color: #1e293b !important; }
+.light-mode .text-slate-300 { color: #334155 !important; }
+.light-mode .text-slate-400 { color: #64748b !important; }
+.light-mode .text-slate-500 { color: #94a3b8 !important; }
+
+.light-mode .bg-slate-900      { background-color: #f1f5f9 !important; }
+.light-mode .bg-slate-900\/60  { background-color: rgba(241,245,249,0.8) !important; }
+.light-mode .bg-slate-900\/40  { background-color: rgba(241,245,249,0.6) !important; }
+.light-mode .bg-slate-900\/80  { background-color: rgba(241,245,249,0.9) !important; }
+.light-mode .bg-slate-800      { background-color: #e2e8f0 !important; }
+.light-mode .bg-slate-800\/30  { background-color: rgba(226,232,240,0.3) !important; }
+.light-mode .bg-slate-800\/60  { background-color: rgba(226,232,240,0.6) !important; }
+.light-mode .bg-slate-800\/80  { background-color: rgba(226,232,240,0.8) !important; }
+
+.light-mode .border-slate-800  { border-color: #e2e8f0 !important; }
+.light-mode .border-slate-700  { border-color: #cbd5e1 !important; }
+.light-mode .divide-slate-800\/60 > * + * { border-color: rgba(226,232,240,0.6) !important; }
+
+.light-mode .text-white { color: #0f172a !important; }
+
+/* Input fields in light mode */
+.light-mode input {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+.light-mode input::placeholder { color: #94a3b8 !important; }
+
+/* Sticky nav in light mode */
+.light-mode header { border-bottom-color: #e2e8f0 !important; }
