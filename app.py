@@ -47,6 +47,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# API Access Control & Security Configuration
+# Enforces X-API-KEY access control on /api/* endpoints when FRAUD_DESK_API_KEY env var is set.
+FRAUD_DESK_API_KEY = os.environ.get("FRAUD_DESK_API_KEY", "").strip()
+
+@app.middleware("http")
+async def enforce_api_access_control(request, call_next):
+    """
+    Enterprise Security & Access Control Middleware for Bank Fraud Desk API.
+    Enforces X-API-KEY header verification on protected /api/* endpoints when FRAUD_DESK_API_KEY is configured.
+    Health check (/api/health) remains public for readiness probes.
+    """
+    if FRAUD_DESK_API_KEY and request.url.path.startswith("/api/") and request.url.path != "/api/health":
+        provided_key = request.headers.get("X-API-KEY") or request.headers.get("x-api-key")
+        if provided_key != FRAUD_DESK_API_KEY:
+            return JSONResponse(
+                status_code=401,
+                content={
+                    "error": "Unauthorized Access",
+                    "detail": "Invalid or missing X-API-KEY authentication header for Fraud Desk API.",
+                    "track_id": "PS06"
+                }
+            )
+    return await call_next(request)
+
 # -----------------------------------------------------------------------------
 # 1. Database Initialization & Synthetic 6-Month Dataset Generator
 # -----------------------------------------------------------------------------
